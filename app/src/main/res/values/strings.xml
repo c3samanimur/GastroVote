@@ -1,3 +1,50 @@
 <resources>
     <string name="app_name">GastroVote</string>
+    <string name="gastrovote">GastroVote</string>
+    <string name="ruta_de_la_tapa">Ruta de la tapa</string>
+    <string name="elige_el_bar">Elige el bar</string>
+
+    <string-array name="nombres_bares" translatable="false">
+        <item>El Extremeño</item>
+        <item>Venta el olivo</item>
+        <item>Cerveceria Ponencias</item>
+        <item>La voz negra</item>
+        <item>La cavalica</item>
+        <item>Rincón de Lola</item>
+        <item>Cervecería Antonio</item>
+        <item>Bar las Mellizas</item>
+    </string-array>
+
+    <string-array name="tapas_bares" translatable="false">
+        <item>Marinera</item>
+        <item>Pulpo a la gallega</item>
+        <item>Marinerito</item>
+        <item>Caballitos</item>
+        <item>Marmitako</item>
+        <item>Croqueta casera</item>
+        <item>Montadito de lomo</item>
+        <item>Michirones</item>
+    </string-array>
+
+    <string-array name="descripciones_tapas">
+        <item>Rosquilla con ensaladilla y anchoa</item>
+        <item>Pulpo tierno con pimentón de la Vera y aceite de oliva</item>
+        <item>Versión mini de la tradicional marinera con boquerón</item>
+        <item>Gambas en gabardina crujientes y doradas</item>
+        <item>Guiso marinero de bonito con patatas</item>
+        <item>Croqueta cremosa de jamón ibérico</item>
+        <item>Lomo tierno con queso fundido en pan rústico</item>
+        <item>Guiso tradicional murciano de habas secas con jamón y chorizo</item>
+    </string-array>
+    
+    <string-array name="precios_tapas">
+        <item>2.50</item>
+        <item>4.00</item>
+        <item>2.20</item>
+        <item>2.80</item>
+        <item>3.50</item>
+        <item>1.80</item>
+        <item>3.00</item>
+        <item>3.20</item>
+    </string-array>
 </resources>
