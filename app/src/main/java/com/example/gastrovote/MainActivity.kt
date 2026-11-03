@@ -1,12 +1,10 @@
 package com.example.gastrovote
 
-import android.R.attr.contentDescription
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.animation.core.spring
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -28,7 +26,6 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
@@ -40,16 +37,11 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.painter.Painter
-import androidx.compose.ui.layout.HorizontalAlignmentLine
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.LineHeightStyle
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.gastrovote.ui.theme.GastroVoteTheme
@@ -58,15 +50,16 @@ import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.outlined.Favorite
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Slider
 import androidx.compose.material3.Switch
 import androidx.compose.material3.TextField
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.draw.scale
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.util.normalizedAngleCos
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.TextButton
+import androidx.compose.material3.LinearProgressIndicator
+import kotlin.text.toDoubleOrNull
 
 
 class MainActivity : ComponentActivity() {
@@ -119,6 +112,8 @@ fun Pantalla(modifier: Modifier) {
         Spacer(modifier = Modifier.height(16.dp))
         BarraSelectora()
         Spacer(modifier = Modifier.height(16.dp))
+
+
     }
 }
 @Composable
@@ -127,6 +122,11 @@ fun BarraSelectora(){
     val tapasBares = stringArrayResource(id = R.array.tapas_bares)
     val descripcionTapas = stringArrayResource(id = R.array.descripciones_tapas)
     val precioTapas = stringArrayResource(id = R.array.precios_tapas)
+    val baresSeleccionados = remember { mutableStateListOf(
+        false, false, false, false, false, false, false, false
+    ) }
+
+    var ultimaReseña by remember {mutableStateOf<ReseñaPublicada?>(null)}
 
     var indice by remember { mutableStateOf(0) }
     val totalBares = nombreBares.size
@@ -157,7 +157,7 @@ fun BarraSelectora(){
                     fontWeight = FontWeight.ExtraBold,
                     fontSize = 24.sp
                 )
-                Text("Bar ${indice + 1} de $totalBares")
+                Text(stringResource(R.string.bar_de, indice + 1, totalBares))
             }
             Button(
                 onClick = {
@@ -174,7 +174,27 @@ fun BarraSelectora(){
         }
     }
     FichaBar(indiceActual = indice)
-    TuReseña(indiceActual = indice)
+    TuReseña(indiceActual = indice,
+        onPublicar = { reseña ->
+        baresSeleccionados[indice] = true
+        ultimaReseña = reseña
+    })
+
+    ultimaReseña?.let { reseña ->
+        ResumenReseña(reseña)
+    }
+
+    var baresReseñados = baresSeleccionados.count() {it}
+
+    Text(
+        stringResource(R.string.ruta) + baresReseñados  + stringResource(R.string.de) + totalBares,
+        fontWeight = FontWeight.ExtraBold
+    )
+    LinearProgressIndicator(
+        progress = {baresReseñados.toFloat() / totalBares},
+        modifier = Modifier.fillMaxWidth()
+    )
+
 }
 
 @Composable
@@ -189,15 +209,21 @@ fun FichaBar(indiceActual: Int){
     val favoritos = remember { mutableStateListOf(false, false, false, false, false, false, false, false) }
 
     Card(
-        modifier = Modifier.fillMaxWidth().padding(16.dp).border(
-            width = 4.dp,
-            color = Color(0xFF113152),
-            shape = RoundedCornerShape(16.dp)),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(16.dp)
+            .border(
+                width = 4.dp,
+                color = Color(0xFF113152),
+                shape = RoundedCornerShape(16.dp)
+            ),
         shape = RoundedCornerShape(16.dp),
         colors = CardDefaults.cardColors(containerColor = Color.Cyan)
     ) {
         Column(
-            modifier = Modifier.fillMaxWidth().padding(16.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp),
             horizontalAlignment = Alignment.Start
         ) {
             Row(
@@ -215,12 +241,16 @@ fun FichaBar(indiceActual: Int){
                     onClick = {
                         val nuevoEstado = !favoritos[indiceActual]
                         favoritos[indiceActual] = nuevoEstado
-                        Toast.makeText(contexto, "Añadido a favoritos!", Toast.LENGTH_LONG).show()
+                        Toast.makeText(
+                            contexto,
+                            if (nuevoEstado) R.string.a_adido_a_favoritos else R.string.fav_quitado,
+                            Toast.LENGTH_SHORT
+                        ).show()
                     }
                 ) {
                     Icon(
                         imageVector = if(favoritos[indiceActual]) Icons.Default.Favorite else Icons.Outlined.Favorite,
-                        contentDescription= "¿Te ha gustado?",
+                        contentDescription= stringResource(R.string.te_ha_gustado),
                         tint = if(favoritos[indiceActual]) Color.Red else Color.Black
                     )
                 }
@@ -274,7 +304,8 @@ fun FichaBar(indiceActual: Int){
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TuReseña(indiceActual: Int){
+fun TuReseña(indiceActual: Int,
+             onPublicar: (ReseñaPublicada) -> Unit){
     var tamaño by remember { mutableStateOf("Tapa") }
     var puntuacion by remember {mutableStateOf(0)}
     var barraDeslizadora by remember { mutableStateOf(5f) }
@@ -283,7 +314,7 @@ fun TuReseña(indiceActual: Int){
         modifier = Modifier.fillMaxWidth()
     ) {
         Text(
-            "Tu reseña",
+            stringResource(R.string.tu_rese_a),
             fontSize = 16.sp,
             color = Color.Blue,
             fontWeight = FontWeight.ExtraBold
@@ -294,7 +325,7 @@ fun TuReseña(indiceActual: Int){
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
-                "Tamaño:"
+                stringResource(R.string.tama_o)
             )
             RadioButton(
                 selected = (tamaño == "Tapa"),
@@ -308,18 +339,18 @@ fun TuReseña(indiceActual: Int){
                 onClick = {tamaño = "Media"}
             )
             Text(
-                "Media"
+                stringResource(R.string.media)
             )
             RadioButton(
                 selected = (tamaño == "Ración"),
                 onClick = {tamaño = "Ración"}
             )
             Text(
-                "Ración"
+                stringResource(R.string.raci_n)
             )
         }
         Text(
-            "Puntuación:"
+            stringResource(R.string.puntuacion_)
         )
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -339,17 +370,15 @@ fun TuReseña(indiceActual: Int){
             }
             Text(
                 if(puntuacion == 0){
-                    "Sin puntuar"
-                } else if(puntuacion == 1){
-                    "Mejorable"
-                } else if(puntuacion == 2){
-                    "Correcta"
+                    stringResource(R.string.sin_puntuar)
+                } else if(puntuacion == 1 || puntuacion == 2){
+                    stringResource(R.string.mejorable)
                 } else if(puntuacion == 3){
-                    "¡Muy buena!"
+                    stringResource(R.string.correcta)
                 } else if (puntuacion == 4){
-                    "¡Espectacular!"
+                    stringResource(R.string.muy_buena)
                 } else if(puntuacion == 5){
-                    "¡Perfecto!"
+                    stringResource(R.string.espectacular)
                 } else{
                     ""
                 }
@@ -362,7 +391,7 @@ fun TuReseña(indiceActual: Int){
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
-                "Calidad-precio",
+                stringResource(R.string.calidad_precio),
                 modifier = Modifier.weight(0.3f)
             )
             Box(
@@ -376,7 +405,9 @@ fun TuReseña(indiceActual: Int){
                     valueRange = 0f..10f,
                     thumb = {
                         Box(
-                            modifier = Modifier.size(20.dp).background(Color.Blue, CircleShape)
+                            modifier = Modifier
+                                .size(20.dp)
+                                .background(Color.Blue, CircleShape)
                         )
                     }
                 )
@@ -392,7 +423,7 @@ fun TuReseña(indiceActual: Int){
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
-                "▼ sigue al desplazar ▼",
+                stringResource(R.string.sigue_al_desplazar),
                 color = Color.Gray,
                 fontSize = 14.sp
             )
@@ -403,22 +434,51 @@ fun TuReseña(indiceActual: Int){
             indiceActual = indiceActual,
             tamaño = tamaño,
             puntuacion = puntuacion,
-            barraDeslizadora = barraDeslizadora
+            barraDeslizadora = barraDeslizadora,
+            onLimpiar = {
+                tamaño = "Tapa"
+                puntuacion = 0
+                barraDeslizadora = 5f
+            },
+            onPublicar = onPublicar
+
         )}
+
 
 @Composable
 fun TuReseñaAbajo(
     indiceActual: Int,
     tamaño: String,
     puntuacion: Int,
-    barraDeslizadora: Float
-){
+    barraDeslizadora: Float,
+    onLimpiar: () -> Unit,
+    onPublicar: (ReseñaPublicada) -> Unit
+) {
     var vegetariana by remember { mutableStateOf(false) }
     var sinGluten by remember { mutableStateOf(false) }
     var picante by remember { mutableStateOf(false) }
     var meGusta by remember { mutableStateOf(false) }
-    var descuento by remember {mutableStateOf(false)}
-    var reseña by remember {mutableStateOf("")}
+    var descuento by remember { mutableStateOf(false) }
+    var reseña by remember { mutableStateOf("") }
+    var contexto = LocalContext.current
+    var mostrarReseña by remember { mutableStateOf(false) }
+    var dialogo by remember { mutableStateOf(false) }
+
+    val nombreBares = stringArrayResource(id = R.array.nombres_bares)
+    val tapasBares = stringArrayResource(id = R.array.tapas_bares)
+    val descripcionTapas = stringArrayResource(id = R.array.descripciones_tapas)
+    val precioTapas = stringArrayResource(id = R.array.precios_tapas)
+
+    var multiplicador = when (tamaño) {
+        "Tapa" -> 1
+        "Media" -> 2
+        "Ración" -> 3
+        else -> 1
+    }
+
+    var resultado = ((precioTapas[indiceActual].toDoubleOrNull() ?: 0.0) * multiplicador)
+    var descuentoNum = (resultado * 0.1)
+
     Column(
         modifier = Modifier.fillMaxWidth()
     ) {
@@ -432,7 +492,7 @@ fun TuReseñaAbajo(
                     checked = vegetariana,
                     onCheckedChange = { vegetariana = it }
                 )
-                Text("Vegetariana", fontSize = 13.sp)
+                Text(stringResource(R.string.vegetariana), fontSize = 13.sp)
             }
 
             Row(verticalAlignment = Alignment.CenterVertically) {
@@ -440,7 +500,7 @@ fun TuReseñaAbajo(
                     checked = sinGluten,
                     onCheckedChange = { sinGluten = it }
                 )
-                Text("Sin gluten", fontSize = 13.sp)
+                Text(stringResource(R.string.sin_gluten), fontSize = 13.sp)
             }
 
             Row(verticalAlignment = Alignment.CenterVertically) {
@@ -448,7 +508,7 @@ fun TuReseñaAbajo(
                     checked = picante,
                     onCheckedChange = { picante = it }
                 )
-                Text("Picante", fontSize = 13.sp)
+                Text(stringResource(R.string.picante), fontSize = 13.sp)
             }
 
         }
@@ -459,16 +519,16 @@ fun TuReseñaAbajo(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
-                "Me gusta"
+                stringResource(R.string.me_gusta)
             )
             Switch(
                 checked = meGusta,
-                onCheckedChange = {meGusta = it}
+                onCheckedChange = { meGusta = it }
             )
             Text(
-                if(meGusta == true) {
-                    "!Te gusta esta tapa¡"
-                } else{
+                if (meGusta == true) {
+                    stringResource(R.string.te_gusta_esta_tapa)
+                } else {
                     ""
                 }
             )
@@ -481,41 +541,257 @@ fun TuReseñaAbajo(
         ) {
             Checkbox(
                 checked = descuento,
-                onCheckedChange = {descuento = it}
+                onCheckedChange = { descuento = it }
             )
             Text(
-                "Descuento estudiante (10%)"
+                stringResource(R.string.descuento_estudiante_10)
             )
         }
         Row(
             modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween,
+            horizontalArrangement = Arrangement.Center,
             verticalAlignment = Alignment.CenterVertically
         ) {
             TextField(
                 value = reseña,
-                onValueChange = {reseña = it}
+                onValueChange = { nuevoTexto ->
+                    if (reseña.length <= 200) {
+                        reseña = nuevoTexto
+                    }
+                },
+                label = { Text(stringResource(R.string.comentario_opcional)) }
             )
         }
+        Spacer(modifier = Modifier.height(24.dp))
         Row(
             modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween,
+            horizontalArrangement = Arrangement.SpaceEvenly,
             verticalAlignment = Alignment.CenterVertically
         ) {
             Button(
-                onClick = {}
+                onClick = {
+                    dialogo = true
+                }
             ) {
                 Text(
-                    "LIMPIAR"
+                    stringResource(R.string.limpiar)
                 )
             }
             Button(
-                onClick = {}
+                onClick = {
+                    if (puntuacion == 0) {
+                        Toast.makeText(
+                            contexto,
+                            R.string.puntua_la_tapa_antes_de_publicar,
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        mostrarReseña = false
+                    } else {
+                        mostrarReseña = true
+                        var nuevaReseña = ReseñaPublicada(
+                            nombreBar = nombreBares[indiceActual],
+                            nombreTapa = tapasBares[indiceActual],
+                            precioBase = precioTapas[indiceActual].toDoubleOrNull() ?: 0.0,
+                            tamaño = tamaño,
+                            puntuacion = puntuacion,
+                            calidadPrecio = barraDeslizadora.toInt(),
+                            vegetariana = vegetariana,
+                            sinGluten = sinGluten,
+                            picante = picante,
+                            meGusta = meGusta,
+                            descuento = descuento,
+                            comentario = reseña,
+                            precioFinal = if (descuento) {
+                                resultado - descuentoNum
+                            } else {
+                                resultado
+                            }
+                        )
+                        onPublicar(nuevaReseña)
+                    }
+
+                }
             ) {
                 Text(
-                    "!PUBLICAR RESEÑA¡"
+                    stringResource(R.string.publicar_rese_a)
                 )
             }
         }
+
+
+        if (dialogo) {
+            AlertDialog(
+                onDismissRequest = {
+                    dialogo = false
+                },
+                title = {
+                    Text(stringResource(R.string.desea_borrar_la_rese_a))
+                },
+                text = {
+                    Text(stringResource(R.string.se_borraran_los_datos_del_formulario))
+                },
+                confirmButton = {
+                    TextButton(
+                        onClick = {
+                            vegetariana = false
+                            sinGluten = false
+                            picante = false
+                            meGusta = false
+                            descuento = false
+                            reseña = ""
+                            mostrarReseña = false
+                            onLimpiar()
+                            dialogo = false
+                        }
+                    ) {
+                        Text(
+                            stringResource(R.string.si_borrar)
+                        )
+                    }
+
+                },
+                dismissButton = {
+                    TextButton(
+                        onClick = {
+                            dialogo = false
+                        }
+                    ) {
+                        Text(
+                            stringResource(R.string.cancelar)
+                        )
+                    }
+                }
+
+            )
+        }
     }
 }
+
+    data class ReseñaPublicada(
+        val nombreBar: String,
+        val nombreTapa: String,
+        val precioBase: Double,
+        val tamaño: String,
+        val puntuacion: Int,
+        val calidadPrecio: Int,
+        val vegetariana: Boolean,
+        val sinGluten: Boolean,
+        val picante: Boolean,
+        val meGusta: Boolean,
+        val descuento: Boolean,
+        val comentario: String,
+        val precioFinal: Double
+    )
+
+
+    @Composable
+    fun ResumenReseña(reseña: ReseñaPublicada) {
+        var multiplicador = when (reseña.tamaño) {
+            "Tapa" -> 1
+            "Media" -> 2
+            "Ración" -> 3
+            else -> 1
+        }
+        var vegetariana = reseña.vegetariana
+        var sinGluten = reseña.sinGluten
+        var picante = reseña.picante
+
+        var precioSinDescuento = reseña.precioBase * multiplicador
+
+        val descuentoNum = if (reseña.descuento) {
+            precioSinDescuento * 0.1
+        } else {
+            0
+        }
+
+        Card(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp)
+                .border(
+                    width = 4.dp,
+                    color = Color(0xFF113152),
+                    shape = RoundedCornerShape(16.dp)
+                ),
+            shape = RoundedCornerShape(16.dp),
+            colors = CardDefaults.cardColors(containerColor = Color.Cyan)
+        ) {
+            Column(
+                modifier = Modifier.fillMaxWidth()
+
+            ) {
+                Row(
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Text(
+                        reseña.nombreTapa + " . " + reseña.nombreBar
+                    )
+                }
+                Row(
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Text(
+                        reseña.tamaño + " . " + reseña.puntuacion + "/5" + if (reseña.puntuacion == 1 || reseña.puntuacion == 2) stringResource(R.string.mejorable)
+                        else if (reseña.puntuacion == 3) stringResource(R.string.correcta)
+                        else if (reseña.puntuacion == 4) stringResource(R.string.muy_buena)
+                        else if (reseña.puntuacion == 5) stringResource(R.string.espectacular) else "error"
+                    )
+                }
+                Row(
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Text(
+                        stringResource(R.string.calidad_precio)  + reseña.calidadPrecio + "/10 " + " . " + stringResource(R.string.me_gusta) + if (reseña.meGusta) stringResource(
+                            R.string.si
+                        ) else "NO"
+                    )
+                }
+                Row(
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+
+                    Text(
+                        stringResource(R.string.precio) + reseña.precioBase + " x " +
+                                (if (reseña.tamaño == "Tapa") "1" else if (reseña.tamaño == "Media") "2" else if (reseña.tamaño == "Ración") "3" else "error")
+                                + " = " + precioSinDescuento + "€"
+
+                    )
+
+                }
+                Row(
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    if (reseña.descuento) {
+
+                        Text(
+                            stringResource(R.string.descuento_estudiante) + "%.2f".format(descuentoNum) + "€"
+                        )
+                    } else {
+                        Text(
+                            stringResource(R.string.descuento_estudiante_no_aplicado)
+                        )
+                    }
+
+
+                }
+                Row(
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    if (reseña.descuento) {
+                        Text(
+                            stringResource(R.string.resultado_final) + "%.2f".format(precioSinDescuento - descuentoNum.toDouble())
+                        )
+                    } else {
+                        Text(
+                            stringResource(R.string.resultado_final2) + precioSinDescuento
+                        )
+                    }
+                }
+
+            }
+        }
+    }
+
+
+
+
