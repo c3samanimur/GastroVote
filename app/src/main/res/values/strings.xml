@@ -4,13 +4,13 @@
     <string name="ruta_de_la_tapa">Ruta de la tapa</string>
     <string name="elige_el_bar">Elige el bar</string>
     <string name="bar_de">Bar %1$d de %2$d</string>
-    <string name="ruta">"Ruta "</string>
-    <string name="de">" de "</string>
-    <string name="a_adido_a_favoritos">¡Añadido a favoritos!</string>
+    <string name="ruta_progreso">Ruta: %1$d de %2$d bares</string>
+    <string name="a_adido_a_favoritos">Añadido a favoritos</string>
     <string name="te_ha_gustado">¿Te ha gustado?</string>
     <string name="tu_rese_a">Tu reseña</string>
     <string name="tama_o">Tamaño:</string>
-    <string name="media">Media</string>
+    <string name="tamano_tapa">Tapa</string>
+    <string name="media">Media ración</string>
     <string name="raci_n">Ración</string>
     <string name="puntuacion_">Puntuación:</string>
     <string name="sin_puntuar">Sin puntuar</string>
@@ -19,28 +19,40 @@
     <string name="muy_buena">¡Muy buena!</string>
     <string name="espectacular">¡Espectacular!</string>
     <string name="calidad_precio">Calidad-precio</string>
+    <string name="valor_sobre_10">%1$d/10</string>
     <string name="sigue_al_desplazar">▼ sigue al desplazar ▼</string>
     <string name="vegetariana">Vegetariana</string>
     <string name="sin_gluten">Sin gluten</string>
     <string name="picante">Picante</string>
     <string name="me_gusta">Me gusta</string>
-    <string name="te_gusta_esta_tapa">!Te gusta esta tapa¡</string>
-    <string name="descuento_estudiante_10">Descuento estudiante (10%)</string>
+    <string name="te_gusta_esta_tapa">¡Te gusta esta tapa!</string>
+    <string name="descuento_estudiante_10">Descuento estudiante (10&#37;)</string>
     <string name="comentario_opcional">Comentario opcional:</string>
-    <string name="limpiar">LIMPIAR</string>
-    <string name="puntua_la_tapa_antes_de_publicar">Puntua la tapa antes de publicar</string>
-    <string name="publicar_rese_a">!PUBLICAR RESEÑA¡</string>
-    <string name="desea_borrar_la_rese_a">¿Desea borrar la reseña?</string>
-    <string name="se_borraran_los_datos_del_formulario">Se borraran los datos del formulario</string>
-    <string name="si_borrar">Si, borrar</string>
-    <string name="cancelar">CANCELAR</string>
-    <string name="si">SI</string>
-    <string name="precio">"Precio: "</string>
-    <string name="descuento_estudiante">Descuento estudiante: -</string>
-    <string name="descuento_estudiante_no_aplicado">Descuento estudiante: NO APLICADO</string>
-    <string name="resultado_final">"Resultado final: "</string>
-    <string name="resultado_final2">"Resultado final: "</string>
-    <string name="fav_quitado">Eliminado de favoritos</string>
+    <string name="limpiar">Limpiar</string>
+    <string name="puntua_la_tapa_antes_de_publicar">Puntúa la tapa antes de publicar</string>
+    <string name="publicar_rese_a">Publicar reseña</string>
+    <string name="desea_borrar_la_rese_a">¿Borrar la reseña?</string>
+    <string name="se_borraran_los_datos_del_formulario">Se borrarán los datos del formulario</string>
+    <string name="si_borrar">Sí, borrar</string>
+    <string name="cancelar">Cancelar</string>
+    <string name="si">Sí</string>
+    <string name="no">No</string>
+    <string name="precio_ficha">%1$.2f €</string>
+    <string name="descuento_estudiante_no_aplicado">Descuento estudiante: no aplicado</string>
+    <string name="fav_quitado">Quitado de favoritos</string>
+    <string name="resena_publicada">¡Reseña publicada!</string>
+    <string name="formulario_limpio">Formulario limpio</string>
+
+    <string name="resumen_tapa_bar">%1$s · %2$s</string>
+    <string name="resumen_tamano_puntuacion">%1$s · %2$d/5 (%3$s)</string>
+    <string name="resumen_calidad_megusta">Calidad-precio: %1$d/10 · Me gusta: %2$s</string>
+    <string name="resumen_precio">Precio: %1$.2f € × %2$d = %3$.2f €</string>
+    <string name="resumen_descuento">Descuento estudiante: -%1$.2f €</string>
+    <string name="resumen_precio_final">Precio final: %1$.2f €</string>
+    <string name="resumen_etiquetas">Etiquetas: %1$s</string>
+    <string name="etiquetas_ninguna">Ninguna</string>
+    <string name="resumen_comentario">Comentario: %1$s</string>
+    <string name="banner_descripcion">Banner de GastroVote</string>
 
     <string-array name="nombres_bares" translatable="false">
         <item>El Extremeño</item>
@@ -64,7 +76,7 @@
         <item>Michirones</item>
     </string-array>
 
-    <string-array name="descripciones_tapas">
+    <string-array name="descripciones_tapas" translatable="true">
         <item>Rosquilla con ensaladilla y anchoa</item>
         <item>Pulpo tierno con pimentón de la Vera y aceite de oliva</item>
         <item>Versión mini de la tradicional marinera con boquerón</item>
@@ -74,8 +86,10 @@
         <item>Lomo tierno con queso fundido en pan rústico</item>
         <item>Guiso tradicional murciano de habas secas con jamón y chorizo</item>
     </string-array>
+
+
     
-    <string-array name="precios_tapas">
+    <string-array name="precios_tapas" translatable="false">
         <item>2.50</item>
         <item>4.00</item>
         <item>2.20</item>
@@ -86,7 +100,7 @@
         <item>3.20</item>
     </string-array>
 
-    <string-array name="puntuacionesEstrella">
+    <string-array name="puntuacionesEstrella" translatable="false">
         <item>5</item>
         <item>2</item>
         <item>3</item>

@@ -89,7 +89,7 @@ fun Pantalla(modifier: Modifier) {
     ) {
         Image(
             painter = painterResource(R.drawable.banner),
-            contentDescription = "GastroVote"
+            contentDescription = stringResource(R.string.banner_descripcion)
         )
         Spacer(modifier = Modifier.height(16.dp))
         Text(
@@ -187,7 +187,7 @@ fun BarraSelectora(){
     var baresReseñados = baresSeleccionados.count() {it}
 
     Text(
-        stringResource(R.string.ruta) + baresReseñados  + stringResource(R.string.de) + totalBares,
+        stringResource(R.string.ruta_progreso, baresReseñados, totalBares),
         fontWeight = FontWeight.ExtraBold
     )
     LinearProgressIndicator(
@@ -271,7 +271,7 @@ fun FichaBar(indiceActual: Int){
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    precioTapas[indiceActual] + "€"
+                    stringResource(R.string.precio_ficha, precioTapas[indiceActual].toDoubleOrNull() ?: 0.0)
                 )
                 Row(
 
@@ -332,7 +332,7 @@ fun TuReseña(indiceActual: Int,
                 onClick = {tamaño = "Tapa"}
             )
             Text(
-                "Tapa"
+                stringResource(R.string.tamano_tapa)
             )
             RadioButton(
                 selected = (tamaño == "Media"),
@@ -413,7 +413,7 @@ fun TuReseña(indiceActual: Int,
                 )
             }
             Text(
-                "${barraDeslizadora.toInt()}/10",
+                stringResource(R.string.valor_sobre_10, barraDeslizadora.toInt()),
                 modifier = Modifier.weight(0.2f)
             )
 
@@ -608,6 +608,7 @@ fun TuReseñaAbajo(
                             }
                         )
                         onPublicar(nuevaReseña)
+                        Toast.makeText(contexto, R.string.resena_publicada, Toast.LENGTH_SHORT).show()
                     }
 
                 }
@@ -642,6 +643,7 @@ fun TuReseñaAbajo(
                             mostrarReseña = false
                             onLimpiar()
                             dialogo = false
+                            Toast.makeText(contexto, R.string.formulario_limpio, Toast.LENGTH_SHORT).show()
                         }
                     ) {
                         Text(
@@ -724,26 +726,41 @@ fun TuReseñaAbajo(
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     Text(
-                        reseña.nombreTapa + " . " + reseña.nombreBar
+                        stringResource(R.string.resumen_tapa_bar, reseña.nombreTapa, reseña.nombreBar)
+                    )
+                }
+                Row(
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                   val tamañoTexto = stringResource(
+                       when (reseña.tamaño) {
+                           "Media" -> R.string.media
+                           "Ración" -> R.string.raci_n
+                           else -> R.string.tamano_tapa
+                       }
+                   )
+
+                    val opinionTexto = stringResource(
+                        when (reseña.puntuacion){
+                            1, 2 -> R.string.mejorable
+                            3 -> R.string.correcta
+                            4 -> R.string.muy_buena
+                            else -> R.string.espectacular
+                        }
+                    )
+                    Text(
+                        stringResource(R.string.resumen_tamano_puntuacion, tamañoTexto, reseña.puntuacion, opinionTexto)
                     )
                 }
                 Row(
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     Text(
-                        reseña.tamaño + " . " + reseña.puntuacion + "/5" + if (reseña.puntuacion == 1 || reseña.puntuacion == 2) stringResource(R.string.mejorable)
-                        else if (reseña.puntuacion == 3) stringResource(R.string.correcta)
-                        else if (reseña.puntuacion == 4) stringResource(R.string.muy_buena)
-                        else if (reseña.puntuacion == 5) stringResource(R.string.espectacular) else "error"
-                    )
-                }
-                Row(
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    Text(
-                        stringResource(R.string.calidad_precio)  + reseña.calidadPrecio + "/10 " + " . " + stringResource(R.string.me_gusta) + if (reseña.meGusta) stringResource(
-                            R.string.si
-                        ) else "NO"
+                        stringResource(
+                            R.string.resumen_calidad_megusta,
+                            reseña.calidadPrecio,
+                            stringResource(if (reseña.meGusta) R.string.si else R.string.no)
+                        )
                     )
                 }
                 Row(
@@ -751,10 +768,12 @@ fun TuReseñaAbajo(
                 ) {
 
                     Text(
-                        stringResource(R.string.precio) + reseña.precioBase + " x " +
-                                (if (reseña.tamaño == "Tapa") "1" else if (reseña.tamaño == "Media") "2" else if (reseña.tamaño == "Ración") "3" else "error")
-                                + " = " + precioSinDescuento + "€"
-
+                        stringResource(
+                            R.string.resumen_precio,
+                            reseña.precioBase,
+                            if (reseña.tamaño == "Tapa") 1 else if (reseña.tamaño == "Media") 2 else 3,
+                            precioSinDescuento
+                        )
                     )
 
                 }
@@ -762,29 +781,19 @@ fun TuReseñaAbajo(
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     if (reseña.descuento) {
-
-                        Text(
-                            stringResource(R.string.descuento_estudiante) + "%.2f".format(descuentoNum) + "€"
-                        )
+                        Text(stringResource(R.string.resumen_descuento, descuentoNum.toDouble()))
                     } else {
-                        Text(
-                            stringResource(R.string.descuento_estudiante_no_aplicado)
-                        )
+                        Text(stringResource(R.string.descuento_estudiante_no_aplicado))
                     }
 
-
                 }
                 Row(
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     if (reseña.descuento) {
-                        Text(
-                            stringResource(R.string.resultado_final) + "%.2f".format(precioSinDescuento - descuentoNum.toDouble())
-                        )
+                        Text(stringResource(R.string.resumen_precio_final, precioSinDescuento - descuentoNum.toDouble()))
                     } else {
-                        Text(
-                            stringResource(R.string.resultado_final2) + precioSinDescuento
-                        )
+                        Text(stringResource(R.string.resumen_precio_final, precioSinDescuento))
                     }
                 }
 
