@@ -1,5 +1,6 @@
 package com.example.gastrovote
 
+
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
@@ -23,44 +24,54 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.KeyboardArrowLeft
+import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
+import androidx.compose.material.icons.filled.DeleteSweep
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.Send
+import androidx.compose.material.icons.filled.Star
+import androidx.compose.material.icons.outlined.FavoriteBorder
+import androidx.compose.material.icons.outlined.Star
+import androidx.compose.material.icons.outlined.StarBorder
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Checkbox
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.LinearProgressIndicator
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Slider
+import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.modifier.modifierLocalConsumer
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.gastrovote.ui.theme.GastroVoteTheme
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.outlined.Favorite
-import androidx.compose.material3.Checkbox
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.RadioButton
-import androidx.compose.material3.Slider
-import androidx.compose.material3.Switch
-import androidx.compose.material3.TextField
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.TextButton
-import androidx.compose.material3.LinearProgressIndicator
-import kotlin.text.toDoubleOrNull
-
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -83,36 +94,42 @@ fun Pantalla(modifier: Modifier) {
         modifier = modifier
             .fillMaxSize()
             .verticalScroll(scrollState)
-            .padding(16.dp),
-        verticalArrangement = Arrangement.Top,
-        horizontalAlignment = Alignment.Start
+
     ) {
         Image(
             painter = painterResource(R.drawable.banner),
-            contentDescription = stringResource(R.string.banner_descripcion)
+            contentDescription = stringResource(R.string.banner_descripcion),
+            modifier = Modifier.fillMaxWidth(),
+            contentScale = ContentScale.FillWidth
         )
-        Spacer(modifier = Modifier.height(16.dp))
-        Text(
-            stringResource(R.string.gastrovote),
-            fontSize = 36.sp,
-            fontWeight = FontWeight.ExtraBold,
-            color = Color.Blue
-        )
-        Spacer(modifier = Modifier.height(16.dp))
-        Text(
-            stringResource(R.string.ruta_de_la_tapa),
-            fontSize = 24.sp
-        )
-        Spacer(modifier = Modifier.height(16.dp))
-        Text(
-            stringResource(R.string.elige_el_bar),
-            fontSize = 32.sp,
-            color = Color.Blue
-        )
-        Spacer(modifier = Modifier.height(16.dp))
-        BarraSelectora()
-        Spacer(modifier = Modifier.height(16.dp))
+        Column(
+            modifier = Modifier.padding(16.dp),
+            verticalArrangement = Arrangement.Top,
+            horizontalAlignment = Alignment.Start
+        ) {
+            Spacer(modifier = Modifier.height(16.dp))
+            Text(
+                stringResource(R.string.gastrovote),
+                fontSize = 36.sp,
+                fontWeight = FontWeight.ExtraBold,
+                color = MaterialTheme.colorScheme.primary
+            )
+            Spacer(modifier = Modifier.height(16.dp))
+            Text(
+                stringResource(R.string.ruta_de_la_tapa),
+                fontSize = 24.sp
+            )
+            Spacer(modifier = Modifier.height(16.dp))
+            Text(
+                stringResource(R.string.elige_el_bar),
+                fontSize = 32.sp,
+                color = MaterialTheme.colorScheme.secondary
+            )
+            Spacer(modifier = Modifier.height(16.dp))
+            BarraSelectora()
+            Spacer(modifier = Modifier.height(16.dp))
 
+        }
 
     }
 }
@@ -134,10 +151,10 @@ fun BarraSelectora(){
     Column(
     ) {
         Row(
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceEvenly
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            Button (
+            FilledTonalButton  (
                 onClick = {
                     if (indice > 0) {
                         indice--
@@ -146,12 +163,16 @@ fun BarraSelectora(){
                     }
                 }
             ) {
-                Text(
-                    "<",
-                    fontSize = 36.sp
+                Icon(
+                    imageVector = Icons.AutoMirrored.Filled.KeyboardArrowLeft,
+                    contentDescription = stringResource(R.string.bar_anterior),
+                    modifier = Modifier.size(40.dp)
                 )
             }
-            Column() {
+            Column(
+                modifier = Modifier.weight(1f),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
                 Text(
                     text = nombreBares[indice],
                     fontWeight = FontWeight.ExtraBold,
@@ -159,7 +180,7 @@ fun BarraSelectora(){
                 )
                 Text(stringResource(R.string.bar_de, indice + 1, totalBares))
             }
-            Button(
+            FilledTonalButton (
                 onClick = {
                     if (indice < totalBares - 1) {
                         indice++
@@ -168,8 +189,11 @@ fun BarraSelectora(){
                     }
                 }
             ) {
-                Text(">",
-                    fontSize = 36.sp)
+                Icon(
+                    imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
+                    contentDescription = stringResource(R.string.bar_siguiente),
+                    modifier = Modifier.size(40.dp)
+                )
             }
         }
     }
@@ -213,12 +237,12 @@ fun FichaBar(indiceActual: Int){
             .fillMaxWidth()
             .padding(16.dp)
             .border(
-                width = 4.dp,
-                color = Color(0xFF113152),
+                width = 1.5.dp,
+                color = MaterialTheme.colorScheme.primary,
                 shape = RoundedCornerShape(16.dp)
             ),
         shape = RoundedCornerShape(16.dp),
-        colors = CardDefaults.cardColors(containerColor = Color.Cyan)
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primaryContainer)
     ) {
         Column(
             modifier = Modifier
@@ -235,7 +259,7 @@ fun FichaBar(indiceActual: Int){
                     nombreBares[indiceActual],
                     fontSize = 26.sp,
                     fontWeight = FontWeight.ExtraBold,
-                    color = Color(0xFF113152)
+                    color = MaterialTheme.colorScheme.primary
                 )
                 IconButton(
                     onClick = {
@@ -249,9 +273,9 @@ fun FichaBar(indiceActual: Int){
                     }
                 ) {
                     Icon(
-                        imageVector = if(favoritos[indiceActual]) Icons.Default.Favorite else Icons.Outlined.Favorite,
+                        imageVector = if(favoritos[indiceActual]) Icons.Default.Favorite else Icons.Outlined.FavoriteBorder,
                         contentDescription= stringResource(R.string.te_ha_gustado),
-                        tint = if(favoritos[indiceActual]) Color.Red else Color.Black
+                        tint = MaterialTheme.colorScheme.secondary
                     )
                 }
             }
@@ -279,18 +303,11 @@ fun FichaBar(indiceActual: Int){
                     val puntuacionInt = puntuacionesEstrella[indiceActual].toIntOrNull() ?: 0
 
                     for (i in 1..5){
-                        var estrella = ""
-                        if (i <= puntuacionInt){
-                            estrella = "★"
-                        } else{
-                            estrella = "☆"
-                        }
-                        Text(
-                            text = estrella,
-                            color = Color.Yellow,
-                            fontSize = 24.sp
-                        )
-
+                            Icon(
+                                imageVector = if(i <= puntuacionInt) Icons.Filled.Star else Icons.Outlined.StarBorder,
+                                contentDescription= null,
+                                tint = Color(0xFFE8A317)
+                            )
                     }
                 }
 
@@ -316,7 +333,7 @@ fun TuReseña(indiceActual: Int,
         Text(
             stringResource(R.string.tu_rese_a),
             fontSize = 16.sp,
-            color = Color.Blue,
+            color = MaterialTheme.colorScheme.secondary,
             fontWeight = FontWeight.ExtraBold
         )
         Row(
@@ -359,13 +376,11 @@ fun TuReseña(indiceActual: Int,
 
 
             for (i in 1..5) {
-                Text(
-                    text = if (i <= puntuacion) "★" else "☆",
-                    color = Color(0xFFFFB300),
-                    fontSize = 36.sp,
-                    modifier = Modifier.clickable {
-                        puntuacion = i
-                    }
+                Icon(
+                    imageVector = if(i <= puntuacion) Icons.Filled.Star else Icons.Outlined.StarBorder,
+                    contentDescription = null,
+                    tint = Color(0xFFFFB300),
+                    modifier = Modifier.size(40.dp).clickable{puntuacion = i}
                 )
             }
             Text(
@@ -573,8 +588,9 @@ fun TuReseñaAbajo(
                     dialogo = true
                 }
             ) {
-                Text(
-                    stringResource(R.string.limpiar)
+                Icon(
+                    imageVector = Icons.Filled.DeleteSweep, contentDescription = stringResource(R.string.limpiar),
+                    modifier = Modifier.size(30.dp)
                 )
             }
             Button(
@@ -613,8 +629,9 @@ fun TuReseñaAbajo(
 
                 }
             ) {
-                Text(
-                    stringResource(R.string.publicar_rese_a)
+                Icon(
+                    imageVector = Icons.Filled.Send, contentDescription = stringResource(R.string.limpiar),
+                    modifier = Modifier.size(30.dp)
                 )
             }
         }
@@ -711,15 +728,15 @@ fun TuReseñaAbajo(
                 .fillMaxWidth()
                 .padding(16.dp)
                 .border(
-                    width = 4.dp,
-                    color = Color(0xFF113152),
+                    width = 1.5.dp,
+                    color = MaterialTheme.colorScheme.primary,
                     shape = RoundedCornerShape(16.dp)
                 ),
             shape = RoundedCornerShape(16.dp),
-            colors = CardDefaults.cardColors(containerColor = Color.Cyan)
+            colors = CardDefaults.cardColors(containerColor =  MaterialTheme.colorScheme.primaryContainer)
         ) {
             Column(
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth().padding(16.dp)
 
             ) {
                 Row(

@@ -12,8 +12,8 @@
     <string name="tu_rese_a">Your rating</string>
     <string name="tama_o">Size:</string>
     <string name="tamano_tapa">Tapa</string>
-    <string name="media">Half</string>
-    <string name="raci_n">Portion</string>
+    <string name="media">Half portion</string>
+    <string name="raci_n">Full Portion</string>
     <string name="puntuacion_">Rating:</string>
     <string name="sin_puntuar">Without rating</string>
     <string name="mejorable">Improvable</string>
@@ -37,7 +37,7 @@
     <string name="limpiar">CLEAN</string>
     <string name="si_borrar">Yes, clean</string>
     <string name="cancelar">CANCEL</string>
-    <string name="si">SI</string>
+    <string name="si">YES</string>
     <string name="precio">"Price: "</string>
     <string name="descuento_estudiante">Student Discount: -</string>
     <string name="resultado_final">Final result:</string>
@@ -56,7 +56,8 @@
     <string name="resumen_etiquetas">Label: %1$s</string>
     <string name="etiquetas_ninguna">None</string>
     <string name="resumen_comentario">Coment: %1$s</string>
-
+    <string name="bar_anterior">Preious bar</string>
+    <string name="bar_siguiente">Next Bar</string>
 
         <string-array name="descripciones_tapas">
             <item>Donut-shaped bread ring with Russian salad and anchovy</item>
