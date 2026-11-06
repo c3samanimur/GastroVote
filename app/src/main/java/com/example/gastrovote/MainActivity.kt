@@ -374,6 +374,39 @@ fun TuReseñaAbajo(
     var resultado = ((precioTapas[indiceActual].toDoubleOrNull() ?: 0.0) * multiplicador)
     var descuentoNum = (resultado * 0.1)
 
+    val enviar: () -> Unit = {
+        if (puntuacion == 0) {
+            Toast.makeText(
+                contexto,
+                R.string.puntua_la_tapa_antes_de_publicar,
+                Toast.LENGTH_SHORT
+            ).show()
+            mostrarReseña = false
+        } else {
+            mostrarReseña = true
+            var nuevaReseña = ReseñaPublicada(
+                nombreBar = nombreBares[indiceActual],
+                nombreTapa = tapasBares[indiceActual],
+                precioBase = precioTapas[indiceActual].toDoubleOrNull() ?: 0.0,
+                tamaño = tamaño,
+                puntuacion = puntuacion,
+                calidadPrecio = barraDeslizadora.toInt(),
+                vegetariana = vegetariana,
+                sinGluten = sinGluten,
+                picante = picante,
+                meGusta = meGusta,
+                descuento = descuento,
+                comentario = reseña,
+                precioFinal = if (descuento) {
+                    resultado - descuentoNum
+                } else {
+                    resultado
+                }
+            )
+            onPublicar(nuevaReseña)
+            Toast.makeText(contexto, R.string.resena_publicada, Toast.LENGTH_SHORT).show()
+        }
+    }
     Column(
         modifier = Modifier.fillMaxWidth()
     ) {
@@ -382,139 +415,25 @@ fun TuReseñaAbajo(
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Checkbox(
-                    checked = vegetariana,
-                    onCheckedChange = { vegetariana = it }
-                )
-                Text(stringResource(R.string.vegetariana), fontSize = 13.sp)
-            }
 
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Checkbox(
-                    checked = sinGluten,
-                    onCheckedChange = { sinGluten = it }
-                )
-                Text(stringResource(R.string.sin_gluten), fontSize = 13.sp)
-            }
+            CasillaEtiqueta(marcado = vegetariana, onMarcar = {vegetariana = it}, texto = stringResource(R.string.vegetariana))
 
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Checkbox(
-                    checked = picante,
-                    onCheckedChange = { picante = it }
-                )
-                Text(stringResource(R.string.picante), fontSize = 13.sp)
-            }
+            CasillaEtiqueta(marcado = sinGluten, onMarcar ={sinGluten = it}, texto = stringResource(R.string.sin_gluten))
+
+            CasillaEtiqueta(marcado = picante, onMarcar ={picante = it}, texto = stringResource(R.string.picante))
 
         }
 
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(34.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Text(
-                stringResource(R.string.me_gusta)
-            )
-            Switch(
-                checked = meGusta,
-                onCheckedChange = { meGusta = it }
-            )
-            Text(
-                if (meGusta == true) {
-                    stringResource(R.string.te_gusta_esta_tapa)
-                } else {
-                    ""
-                }
-            )
+        FilaMeGusta(meGusta, {meGusta = it})
 
-        }
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(34.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Checkbox(
-                checked = descuento,
-                onCheckedChange = { descuento = it }
-            )
-            Text(
-                stringResource(R.string.descuento_estudiante_10)
-            )
-        }
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.Center,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            TextField(
-                value = reseña,
-                onValueChange = { nuevoTexto ->
-                    if (reseña.length <= 200) {
-                        reseña = nuevoTexto
-                    }
-                },
-                label = { Text(stringResource(R.string.comentario_opcional)) }
-            )
-        }
+        FilaDescuento(descuento, {descuento = it})
+
+        CampoComentario(reseña, {reseña = it})
+
         Spacer(modifier = Modifier.height(24.dp))
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceEvenly,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Button(
-                onClick = {
-                    dialogo = true
-                }
-            ) {
-                Icon(
-                    imageVector = Icons.Filled.DeleteSweep, contentDescription = stringResource(R.string.limpiar),
-                    modifier = Modifier.size(30.dp)
-                )
-            }
-            Button(
-                onClick = {
-                    if (puntuacion == 0) {
-                        Toast.makeText(
-                            contexto,
-                            R.string.puntua_la_tapa_antes_de_publicar,
-                            Toast.LENGTH_SHORT
-                        ).show()
-                        mostrarReseña = false
-                    } else {
-                        mostrarReseña = true
-                        var nuevaReseña = ReseñaPublicada(
-                            nombreBar = nombreBares[indiceActual],
-                            nombreTapa = tapasBares[indiceActual],
-                            precioBase = precioTapas[indiceActual].toDoubleOrNull() ?: 0.0,
-                            tamaño = tamaño,
-                            puntuacion = puntuacion,
-                            calidadPrecio = barraDeslizadora.toInt(),
-                            vegetariana = vegetariana,
-                            sinGluten = sinGluten,
-                            picante = picante,
-                            meGusta = meGusta,
-                            descuento = descuento,
-                            comentario = reseña,
-                            precioFinal = if (descuento) {
-                                resultado - descuentoNum
-                            } else {
-                                resultado
-                            }
-                        )
-                        onPublicar(nuevaReseña)
-                        Toast.makeText(contexto, R.string.resena_publicada, Toast.LENGTH_SHORT).show()
-                    }
 
-                }
-            ) {
-                Icon(
-                    imageVector = Icons.Filled.Send, contentDescription = stringResource(R.string.limpiar),
-                    modifier = Modifier.size(30.dp)
-                )
-            }
-        }
+        Botones({dialogo = true}, enviar)
+
 
 
         if (dialogo) {
@@ -566,7 +485,115 @@ fun TuReseñaAbajo(
     }
 }
 
-    data class ReseñaPublicada(
+@Composable
+private fun Botones(limpiar: () -> Unit, enviar: () -> Unit) {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceEvenly,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Button(
+            onClick = {
+                limpiar()
+            }
+        ) {
+            Icon(
+                imageVector = Icons.Filled.DeleteSweep,
+                contentDescription = stringResource(R.string.limpiar),
+                modifier = Modifier.size(30.dp)
+            )
+        }
+        Button(
+            onClick = {
+                enviar()
+            }
+        ) {
+            Icon(
+                imageVector = Icons.Filled.Send,
+                contentDescription = stringResource(R.string.limpiar),
+                modifier = Modifier.size(30.dp)
+            )
+        }
+    }
+}
+
+@Composable
+private fun CampoComentario(reseña: String, comprobarLong: (String) -> Unit) {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.Center,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        TextField(
+            value = reseña,
+            onValueChange = { nuevoTexto ->
+                if (reseña.length <= 200) {
+                    comprobarLong(nuevoTexto)
+                }
+            },
+            label = { Text(stringResource(R.string.comentario_opcional)) }
+        )
+    }
+}
+
+@Composable
+private fun FilaDescuento(descuento: Boolean, onDescuento: (Boolean) -> Unit) {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.spacedBy(34.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Checkbox(
+            checked = descuento,
+            onCheckedChange = onDescuento
+        )
+        Text(
+            stringResource(R.string.descuento_estudiante_10)
+        )
+    }
+}
+
+@Composable
+private fun FilaMeGusta(meGusta: Boolean, cambiarMeGusta: (Boolean) -> Unit) {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.spacedBy(34.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Text(
+            stringResource(R.string.me_gusta)
+        )
+        Switch(
+            checked = meGusta,
+            onCheckedChange = cambiarMeGusta
+        )
+        Text(
+            if (meGusta == true) {
+                stringResource(R.string.te_gusta_esta_tapa)
+            } else {
+                ""
+            }
+        )
+
+    }
+}
+
+@Composable
+private fun CasillaEtiqueta(
+    marcado: Boolean,
+    onMarcar: (Boolean) -> Unit,
+    texto: String
+) {
+    Row(verticalAlignment = Alignment.CenterVertically) {
+        Checkbox(
+            checked = marcado,
+            onCheckedChange = onMarcar
+        )
+        Text(texto, fontSize = 13.sp)
+    }
+}
+
+data class ReseñaPublicada(
         val nombreBar: String,
         val nombreTapa: String,
         val precioBase: Double,
