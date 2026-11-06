@@ -200,96 +200,15 @@ fun TuReseña(indiceActual: Int,
             color = MaterialTheme.colorScheme.secondary,
             fontWeight = FontWeight.ExtraBold
         )
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceEvenly,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Text(
-                stringResource(R.string.tama_o)
-            )
-            RadioButton(
-                selected = (tamaño == "Tapa"),
-                onClick = {tamaño = "Tapa"}
-            )
-            Text(
-                stringResource(R.string.tamano_tapa)
-            )
-            RadioButton(
-                selected = (tamaño == "Media"),
-                onClick = {tamaño = "Media"}
-            )
-            Text(
-                stringResource(R.string.media)
-            )
-            RadioButton(
-                selected = (tamaño == "Ración"),
-                onClick = {tamaño = "Ración"}
-            )
-            Text(
-                stringResource(R.string.raci_n)
-            )
-        }
-        Text(
-            stringResource(R.string.puntuacion_)
-        )
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
 
+        SelectorTamaño(tamaño = tamaño, seleccionarTamaño = {tamaño = it})
 
-           FilaEstrellas(puntuacion = puntuacion, tamañoIcono = 36.dp, onPuntuar = {puntuacion = it})
-            Text(
-                if(puntuacion == 0){
-                    stringResource(R.string.sin_puntuar)
-                } else if(puntuacion == 1 || puntuacion == 2){
-                    stringResource(R.string.mejorable)
-                } else if(puntuacion == 3){
-                    stringResource(R.string.correcta)
-                } else if (puntuacion == 4){
-                    stringResource(R.string.muy_buena)
-                } else if(puntuacion == 5){
-                    stringResource(R.string.espectacular)
-                } else{
-                    ""
-                }
-            )
-        }
+        PuntuacionReseña(puntuacion, {puntuacion = it})
+
         Spacer(modifier = Modifier.height(16.dp))
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Text(
-                stringResource(R.string.calidad_precio),
-                modifier = Modifier.weight(0.3f)
-            )
-            Box(
-                modifier = Modifier.weight(0.55f)
-            ) {
-                Slider(
-                    value = barraDeslizadora,
-                    onValueChange = { nuevoValor ->
-                        barraDeslizadora = nuevoValor
-                    },
-                    valueRange = 0f..10f,
-                    thumb = {
-                        Box(
-                            modifier = Modifier
-                                .size(20.dp)
-                                .background(Color.Blue, CircleShape)
-                        )
-                    }
-                )
-            }
-            Text(
-                stringResource(R.string.valor_sobre_10, barraDeslizadora.toInt()),
-                modifier = Modifier.weight(0.2f)
-            )
 
-        }
+        BarraCalidadPrecio(barraDeslizadora, {barraDeslizadora = it})
+
         Row(
             modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically
@@ -315,6 +234,110 @@ fun TuReseña(indiceActual: Int,
             onPublicar = onPublicar
 
         )}
+
+@Composable
+@OptIn(ExperimentalMaterial3Api::class)
+private fun BarraCalidadPrecio(
+    barraDeslizadora: Float,
+    onBarraDeslizador: (Float) -> Unit
+) {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Text(
+            stringResource(R.string.calidad_precio),
+            modifier = Modifier.weight(0.3f)
+        )
+        Box(
+            modifier = Modifier.weight(0.55f)
+        ) {
+            Slider(
+                value = barraDeslizadora,
+                onValueChange = onBarraDeslizador,
+                valueRange = 0f..10f,
+                thumb = {
+                    Box(
+                        modifier = Modifier
+                            .size(20.dp)
+                            .background(Color.Blue, CircleShape)
+                    )
+                }
+            )
+        }
+        Text(
+            stringResource(R.string.valor_sobre_10, barraDeslizadora.toInt()),
+            modifier = Modifier.weight(0.2f)
+        )
+
+    }
+}
+
+@Composable
+private fun PuntuacionReseña(puntuacion: Int, puntuar: (Int) -> Unit) {
+    Column() {
+        Text(
+            stringResource(R.string.puntuacion_)
+        )
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+
+            FilaEstrellas(puntuacion = puntuacion, tamañoIcono = 36.dp, onPuntuar = puntuar)
+            Text(
+                if (puntuacion == 0) {
+                    stringResource(R.string.sin_puntuar)
+                } else if (puntuacion == 1 || puntuacion == 2) {
+                    stringResource(R.string.mejorable)
+                } else if (puntuacion == 3) {
+                    stringResource(R.string.correcta)
+                } else if (puntuacion == 4) {
+                    stringResource(R.string.muy_buena)
+                } else if (puntuacion == 5) {
+                    stringResource(R.string.espectacular)
+                } else {
+                    ""
+                }
+            )
+        }
+    }
+}
+
+@Composable
+private fun SelectorTamaño(tamaño: String, seleccionarTamaño: (String) -> Unit) {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceEvenly,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Text(
+            stringResource(R.string.tama_o)
+        )
+        RadioButton(
+            selected = (tamaño == "Tapa"),
+            onClick = { seleccionarTamaño("Tapa") }
+        )
+        Text(
+            stringResource(R.string.tamano_tapa)
+        )
+        RadioButton(
+            selected = (tamaño == "Media"),
+            onClick = { seleccionarTamaño("Media") }
+        )
+        Text(
+            stringResource(R.string.media)
+        )
+        RadioButton(
+            selected = (tamaño == "Ración"),
+            onClick = { seleccionarTamaño("Ración") }
+        )
+        Text(
+            stringResource(R.string.raci_n)
+        )
+    }
+}
 
 
 @Composable
