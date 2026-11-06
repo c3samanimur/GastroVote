@@ -23,8 +23,7 @@ private val EsquemaOscuro = darkColorScheme(
     primaryContainer = Color(0xFF22324A),
     onPrimaryContainer = Color(0xFF8FB4E8),
     onBackground = Color(0xFFEDE8DD),
-    onSurface = Color(0xFFEDE8DD),
-    secondaryFixed = Color(0xFFC6E64A)
+    onSurface = Color(0xFFEDE8DD)
 )
 
 private val EsquemaClaro = lightColorScheme(
@@ -37,8 +36,7 @@ private val EsquemaClaro = lightColorScheme(
     primaryContainer = Color(0xFFE6EEF8),
     onPrimaryContainer = Color(0xFF1F4E8C),
     onBackground = Color(0xFF1E2A3A),
-    onSurface = Color(0xFF1E2A3A),
-    secondaryFixed = Color(0xFFC6E64A)
+    onSurface = Color(0xFF1E2A3A)
 )
 
 @Composable

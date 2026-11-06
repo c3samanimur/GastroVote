@@ -6,10 +6,8 @@ import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -25,24 +23,15 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.KeyboardArrowLeft
-import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
 import androidx.compose.material.icons.filled.DeleteSweep
-import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Send
-import androidx.compose.material.icons.filled.Star
-import androidx.compose.material.icons.outlined.FavoriteBorder
-import androidx.compose.material.icons.outlined.Star
-import androidx.compose.material.icons.outlined.StarBorder
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.RadioButton
@@ -61,14 +50,10 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.modifier.modifierLocalConsumer
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.gastrovote.ui.theme.GastroVoteTheme
@@ -94,31 +79,15 @@ fun Pantalla(modifier: Modifier) {
         modifier = modifier
             .fillMaxSize()
             .verticalScroll(scrollState)
-
     ) {
-        Image(
-            painter = painterResource(R.drawable.banner),
-            contentDescription = stringResource(R.string.banner_descripcion),
-            modifier = Modifier.fillMaxWidth(),
-            contentScale = ContentScale.FillWidth
-        )
+
+        Cabecera()
         Column(
             modifier = Modifier.padding(16.dp),
             verticalArrangement = Arrangement.Top,
             horizontalAlignment = Alignment.Start
         ) {
-            Spacer(modifier = Modifier.height(16.dp))
-            Text(
-                stringResource(R.string.gastrovote),
-                fontSize = 36.sp,
-                fontWeight = FontWeight.ExtraBold,
-                color = MaterialTheme.colorScheme.primary
-            )
-            Spacer(modifier = Modifier.height(16.dp))
-            Text(
-                stringResource(R.string.ruta_de_la_tapa),
-                fontSize = 24.sp
-            )
+
             Spacer(modifier = Modifier.height(16.dp))
             Text(
                 stringResource(R.string.elige_el_bar),
@@ -133,6 +102,8 @@ fun Pantalla(modifier: Modifier) {
 
     }
 }
+
+
 @Composable
 fun BarraSelectora(){
     val nombreBares = stringArrayResource(id = R.array.nombres_bares)
@@ -144,60 +115,51 @@ fun BarraSelectora(){
     ) }
 
     var ultimaReseña by remember {mutableStateOf<ReseñaPublicada?>(null)}
-
     var indice by remember { mutableStateOf(0) }
     val totalBares = nombreBares.size
+    val nombreActual = nombreBares[indice]
+    val posicion = indice+1
 
-    Column(
-    ) {
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            FilledTonalButton  (
-                onClick = {
-                    if (indice > 0) {
-                        indice--
-                    } else {
-                        indice = totalBares - 1
-                    }
-                }
-            ) {
-                Icon(
-                    imageVector = Icons.AutoMirrored.Filled.KeyboardArrowLeft,
-                    contentDescription = stringResource(R.string.bar_anterior),
-                    modifier = Modifier.size(40.dp)
-                )
-            }
-            Column(
-                modifier = Modifier.weight(1f),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Text(
-                    text = nombreBares[indice],
-                    fontWeight = FontWeight.ExtraBold,
-                    fontSize = 24.sp
-                )
-                Text(stringResource(R.string.bar_de, indice + 1, totalBares))
-            }
-            FilledTonalButton (
-                onClick = {
-                    if (indice < totalBares - 1) {
-                        indice++
-                    } else {
-                        indice = 0
-                    }
-                }
-            ) {
-                Icon(
-                    imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
-                    contentDescription = stringResource(R.string.bar_siguiente),
-                    modifier = Modifier.size(40.dp)
-                )
-            }
+    val contexto = LocalContext.current
+    val favoritos = remember { mutableStateListOf(false, false, false, false, false, false, false, false) }
+    val puntuacionesEstrella = stringArrayResource(id = R.array.puntuacionesEstrella)
+
+    val irAnterior: () -> Unit = {
+        if (indice > 0) {
+            indice--
+        } else {
+            indice = totalBares - 1
         }
     }
-    FichaBar(indiceActual = indice)
+
+    val irSiguiente: () -> Unit = {
+        if (indice < totalBares - 1) {
+            indice++
+        } else {
+            indice = 0
+        }
+    }
+
+    BarraSelectora(irAnterior, nombreActual, posicion, totalBares, irSiguiente)
+
+    FichaBar(
+        nombreBar = nombreBares[indice],
+        descripcionTapa = descripcionTapas[indice],
+        precioTapa = precioTapas[indice].toDoubleOrNull() ?: 0.0,
+        puntuacion = puntuacionesEstrella[indice].toIntOrNull() ?: 0,
+        esFav = favoritos[indice],
+        onAlternarFav = {
+            val nuevoEstado = !favoritos[indice]
+            favoritos[indice] = nuevoEstado
+            Toast.makeText(
+                contexto,
+                if (nuevoEstado) R.string.a_adido_a_favoritos else R.string.fav_quitado,
+                Toast.LENGTH_SHORT
+            ).show()
+        }
+    )
+
+
     TuReseña(indiceActual = indice,
         onPublicar = { reseña ->
         baresSeleccionados[indice] = true
@@ -218,104 +180,6 @@ fun BarraSelectora(){
         progress = {baresReseñados.toFloat() / totalBares},
         modifier = Modifier.fillMaxWidth()
     )
-
-}
-
-@Composable
-fun FichaBar(indiceActual: Int){
-    val nombreBares = stringArrayResource(id = R.array.nombres_bares)
-    val tapasBares = stringArrayResource(id = R.array.tapas_bares)
-    val descripcionTapas = stringArrayResource(id = R.array.descripciones_tapas)
-    val precioTapas = stringArrayResource(id = R.array.precios_tapas)
-    val puntuacionesEstrella = stringArrayResource(id = R.array.puntuacionesEstrella)
-    val contexto = LocalContext.current
-
-    val favoritos = remember { mutableStateListOf(false, false, false, false, false, false, false, false) }
-
-    Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(16.dp)
-            .border(
-                width = 1.5.dp,
-                color = MaterialTheme.colorScheme.primary,
-                shape = RoundedCornerShape(16.dp)
-            ),
-        shape = RoundedCornerShape(16.dp),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primaryContainer)
-    ) {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp),
-            horizontalAlignment = Alignment.Start
-        ) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(
-                    nombreBares[indiceActual],
-                    fontSize = 26.sp,
-                    fontWeight = FontWeight.ExtraBold,
-                    color = MaterialTheme.colorScheme.primary
-                )
-                IconButton(
-                    onClick = {
-                        val nuevoEstado = !favoritos[indiceActual]
-                        favoritos[indiceActual] = nuevoEstado
-                        Toast.makeText(
-                            contexto,
-                            if (nuevoEstado) R.string.a_adido_a_favoritos else R.string.fav_quitado,
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }
-                ) {
-                    Icon(
-                        imageVector = if(favoritos[indiceActual]) Icons.Default.Favorite else Icons.Outlined.FavoriteBorder,
-                        contentDescription= stringResource(R.string.te_ha_gustado),
-                        tint = MaterialTheme.colorScheme.secondary
-                    )
-                }
-            }
-            Spacer(modifier = Modifier.height(16.dp))
-            Row(
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                Text(
-                    descripcionTapas[indiceActual]
-                )
-
-            }
-            Spacer(modifier = Modifier.height(16.dp))
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(
-                    stringResource(R.string.precio_ficha, precioTapas[indiceActual].toDoubleOrNull() ?: 0.0)
-                )
-                Row(
-
-                ) {
-                    val puntuacionInt = puntuacionesEstrella[indiceActual].toIntOrNull() ?: 0
-
-                    for (i in 1..5){
-                            Icon(
-                                imageVector = if(i <= puntuacionInt) Icons.Filled.Star else Icons.Outlined.StarBorder,
-                                contentDescription= null,
-                                tint = Color(0xFFE8A317)
-                            )
-                    }
-                }
-
-
-
-            }
-        }
-    }
 
 }
 
@@ -375,14 +239,7 @@ fun TuReseña(indiceActual: Int,
         ) {
 
 
-            for (i in 1..5) {
-                Icon(
-                    imageVector = if(i <= puntuacion) Icons.Filled.Star else Icons.Outlined.StarBorder,
-                    contentDescription = null,
-                    tint = Color(0xFFFFB300),
-                    modifier = Modifier.size(40.dp).clickable{puntuacion = i}
-                )
-            }
+           FilaEstrellas(puntuacion = puntuacion, tamañoIcono = 36.dp, onPuntuar = {puntuacion = it})
             Text(
                 if(puntuacion == 0){
                     stringResource(R.string.sin_puntuar)
