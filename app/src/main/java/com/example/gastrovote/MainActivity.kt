@@ -127,7 +127,7 @@ fun BarraSelectora() {
     SelectorBar(irAnterior, nombreActual, posicion, totalBares, irSiguiente)
 
     FichaBar(
-        nombreBar = nombreBares[indice],
+        tapaBar = tapasBares[indice],
         descripcionTapa = descripcionTapas[indice],
         precioTapa = precioTapas[indice].toDoubleOrNull() ?: 0.0,
         puntuacion = puntuacionesEstrella[indice].toIntOrNull() ?: 0,

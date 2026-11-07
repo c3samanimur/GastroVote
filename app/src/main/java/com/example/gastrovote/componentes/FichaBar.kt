@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
@@ -28,7 +29,7 @@ import androidx.compose.ui.unit.sp
 import com.example.gastrovote.R
 
 @Composable
-fun FichaBar(nombreBar: String,
+fun FichaBar(tapaBar: String,
              descripcionTapa: String,
              precioTapa: Double,
              puntuacion: Int,
@@ -60,10 +61,11 @@ fun FichaBar(nombreBar: String,
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    nombreBar,
+                    tapaBar,
                     fontSize = 26.sp,
                     fontWeight = FontWeight.ExtraBold,
-                    color = MaterialTheme.colorScheme.primary
+                    color = MaterialTheme.colorScheme.primary,
+                    modifier = Modifier.weight(1f)
                 )
                 IconButton(
                     onClick = {
@@ -73,7 +75,8 @@ fun FichaBar(nombreBar: String,
                     Icon(
                         imageVector = if (esFav) Icons.Default.Favorite else Icons.Outlined.FavoriteBorder,
                         contentDescription = stringResource(R.string.te_ha_gustado),
-                        tint = MaterialTheme.colorScheme.secondary
+                        tint = MaterialTheme.colorScheme.secondary,
+                        modifier = Modifier.size(34.dp)
                     )
                 }
             }

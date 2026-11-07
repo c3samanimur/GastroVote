@@ -1,15 +1,19 @@
 package com.example.gastrovote.componentes
 
 import android.widget.Toast
+import androidx.annotation.StringRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DeleteSweep
@@ -35,6 +39,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -181,10 +186,9 @@ private fun TuReseñaAbajo(
     Column(
         modifier = Modifier.fillMaxWidth()
     ) {
-        Row(
+        FlowRow(
             modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
+            horizontalArrangement = Arrangement.SpaceBetween
         ) {
 
             CasillaEtiqueta(
@@ -336,35 +340,41 @@ private fun CasillaEtiqueta(
 
 @Composable
 private fun SelectorTamaño(tamaño: String, seleccionarTamaño: (String) -> Unit) {
-    Row(
-        modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.SpaceEvenly,
-        verticalAlignment = Alignment.CenterVertically
+    Column(
+
     ) {
         Text(
             stringResource(R.string.tama_o)
         )
-        RadioButton(
-            selected = (tamaño == "Tapa"),
-            onClick = { seleccionarTamaño("Tapa") }
-        )
-        Text(
-            stringResource(R.string.tamano_tapa)
-        )
-        RadioButton(
-            selected = (tamaño == "Media"),
-            onClick = { seleccionarTamaño("Media") }
-        )
-        Text(
-            stringResource(R.string.media)
-        )
-        RadioButton(
-            selected = (tamaño == "Ración"),
-            onClick = { seleccionarTamaño("Ración") }
-        )
-        Text(
-            stringResource(R.string.raci_n)
-        )
+        FlowRow(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceEvenly
+        ) {
+            OpcionTamaño("Tapa", R.string.tamano_tapa, tamaño, seleccionarTamaño)
+            OpcionTamaño("Media", R.string.media, tamaño, seleccionarTamaño)
+            OpcionTamaño("Ración", R.string.raci_n, tamaño, seleccionarTamaño)
+        }
+    }
+
+}
+@Composable
+private fun OpcionTamaño(
+    valor: String,
+    @StringRes texto: Int,
+    seleccionado: String,
+    onSeleccionar: (String) -> Unit
+) {
+    Row(
+        modifier = Modifier.selectable(
+            selected = seleccionado == valor,
+            onClick = { onSeleccionar(valor) },
+            role = Role.RadioButton
+        ),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        RadioButton(selected = seleccionado == valor, onClick = null)
+        Spacer(modifier = Modifier.width(6.dp))
+        Text(stringResource(texto))
     }
 }
 
@@ -405,22 +415,20 @@ private fun BarraCalidadPrecio(
     barraDeslizadora: Float,
     onBarraDeslizador: (Float) -> Unit
 ) {
-    Row(
-        modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.spacedBy(8.dp),
-        verticalAlignment = Alignment.CenterVertically
+    Column(
+
     ) {
-        Text(
-            stringResource(R.string.calidad_precio),
-            modifier = Modifier.weight(0.3f)
-        )
-        Box(
-            modifier = Modifier.weight(0.55f)
+        Text(stringResource(R.string.calidad_precio))
+        FlowRow(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
+
             Slider(
                 value = barraDeslizadora,
                 onValueChange = onBarraDeslizador,
                 valueRange = 0f..10f,
+                modifier = Modifier.weight(1f),
                 thumb = {
                     Box(
                         modifier = Modifier
@@ -429,12 +437,9 @@ private fun BarraCalidadPrecio(
                     )
                 }
             )
+            Text(stringResource(R.string.valor_sobre_10, barraDeslizadora.toInt()))
         }
-        Text(
-            stringResource(R.string.valor_sobre_10, barraDeslizadora.toInt()),
-            modifier = Modifier.weight(0.2f)
-        )
-
     }
+
 }
 
