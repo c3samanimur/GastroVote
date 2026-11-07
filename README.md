@@ -131,24 +131,23 @@ Rellenar esta tabla después de ejecutar las comprobaciones.
 
 ### 5.6. Capturas de pantalla
 
-Añadir las capturas correspondientes una vez verificadas.
+**Móvil · tema claro · español**
 
-**Pantalla principal**
+| Pantalla principal | Reseña publicada |
+|---|---|
+| <img src="capturas/principal.png" width="250"> | <img src="capturas/resena.png" width="250"> |
 
-![Pantalla principal](capturas/principal.png)
+**Modo oscuro e inglés**
 
-**Formulario y resumen**
+| Modo oscuro | Inglés | Inglés · resumen |
+|---|---|---|
+| <img src="capturas/oscuro.png" width="250"> | <img src="capturas/ingles1.png" width="250"> | <img src="capturas/ingles2.png" width="250"> |
 
-![Reseña publicada](capturas/resena.png)
+**Tablet y fuente al máximo**
 
-**Modo oscuro**
-
-![Modo oscuro](capturas/oscuro.png)
-
-**Versión en inglés**
-
-![Versión en inglés](capturas/ingles.png)
-
+| Tablet | Tablet · reseña | Fuente al máximo |
+|---|---|---|
+| <img src="capturas/principalTablet.png" width="250"> | <img src="capturas/resenaTablet.png" width="250"> | <img src="capturas/fuenteMaximo.png" width="250"> |
 ### 5.7. Recursos gráficos
 
 - **Banner:** [Indicar su origen].
