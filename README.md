@@ -121,13 +121,15 @@ Rellenar esta tabla después de ejecutar las comprobaciones.
 
 ### 5.5. Layout Inspector
 
-**Problema detectado:** Pendiente de documentar.
+**Problema detectado.** En un Pixel 5, la etiqueta «Picante» se partía letra a letra y «Ración» se cortaba en dos líneas.
 
-**Herramienta utilizada:** Layout Inspector de Android Studio.
+**Cómo se localizó.** Con el Layout Inspector de Android Studio se vieron los bordes de cada elemento: las tres casillas de etiquetas estaban en un `Row`, y la última recibía solo el ancho que sobraba, demasiado estrecho para su texto. Un `Row` nunca pasa a la línea siguiente.
 
-**Solución aplicada:** Pendiente.
+**Solución aplicada.** Se cambió el `Row` por un `FlowRow`, que pasa a la línea siguiente cualquier elemento que no quepa entero. Se aplicó lo mismo a las opciones de tamaño.
 
-**Resultado:** Pendiente.
+**Resultado.** Las etiquetas y los tamaños bajan completos a una segunda línea cuando no caben, también con la fuente al máximo.
+
+<img src="capturas/inspector.png" width="500">.
 
 ### 5.6. Capturas de pantalla
 
