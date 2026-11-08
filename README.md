@@ -101,24 +101,23 @@ La clase `ReseñaPublicada` almacena una copia de los datos al publicar, evitand
 
 ### 5.4. Pruebas realizadas
 
-Rellenar esta tabla después de ejecutar las comprobaciones.
-
-| Prueba | Resultado | Observaciones |
-|---|---|---|
-| Móvil pequeño, vertical | Pendiente | |
-| Tablet, vertical | Pendiente | |
-| Tema claro | Pendiente | |
-| Tema oscuro | Pendiente | |
-| Idioma español | Pendiente | |
-| Idioma inglés | Pendiente | |
-| Tamaño de fuente máximo | Pendiente | |
-| Navegación circular de bares | Pendiente | |
-| Publicación sin estrellas | Pendiente | |
-| Precio con cada tamaño | Pendiente | |
-| Precio con y sin descuento | Pendiente | |
-| Publicación repetida del mismo bar | Pendiente | |
-| Cancelación del diálogo de limpieza | Pendiente | |
-
+| # | Condición | Cómo se ha probado | Resultado esperado | Resultado | Observaciones |
+|---|---|---|---|---|---|
+| 1.1 | Móvil pequeño, vertical | Emulador Pixel 5 | Todo visible desplazando, sin textos cortados | Correcto | Tras cambiar las etiquetas y el tamaño a `FlowRow` (ver 5.5). |
+| 1.2 | Tablet, vertical | Emulador Medium Tablet | Todo visible y bien proporcionado | Correcto | Las filas se estiraban a todo el ancho. Se limitó el contenido a 600 dp con `widthIn` y se centró. |
+| 2.1 | Tema claro | Tema oscuro del sistema desactivado | Colores propios, texto legible | Correcto | |
+| 2.2 | Tema oscuro | Tema oscuro del sistema activado | Colores propios en versión oscura, texto legible | Correcto | En Android 12+ se veían los colores del sistema. Se desactivó `dynamicColor` en `Theme.kt`. |
+| 3.1 | Idioma español | Idioma del sistema: Español | Todos los textos en español | Correcto | |
+| 3.2 | Idioma inglés | Idioma del sistema: English (US) | Todo en inglés salvo bares y tapas | Correcto | Había erratas y textos sin traducir («Preious bar», «1 of 8 bar», descripción del banner). Corregidos en `values-en/strings.xml`. |
+| 4 | Fuente al máximo | Tamaño de fuente del sistema al máximo | Textos legibles, nada se solapa | Correcto | «Picante» y «Ración» se partían; resuelto con `FlowRow`. La barra de calidad-precio se estrecha, pero sigue siendo usable. |
+| 5.1 | Recorrer con ▶ | Pulsar ▶ desde el bar 8 | Pasa al bar 1 | Correcto | |
+| 5.2 | Recorrer con ◀ | Pulsar ◀ desde el bar 1 | Pasa al bar 8 | Correcto | |
+| 5.3 | Publicar sin estrellas | Publicar con 0 estrellas | Toast «Puntúa la tapa antes de publicar» | Correcto | |
+| 5.4 | Precio tapa | Bar 1 (2,50 €), sin / con descuento | 2,50 € / 2,25 € | Correcto | |
+| 5.5 | Precio media ración | Bar 1, sin / con descuento | 5,00 € / 4,50 € | Correcto | Coincide con el ejemplo del enunciado. |
+| 5.6 | Precio ración | Bar 1, sin / con descuento | 7,50 € / 6,75 € | Correcto | |
+| 5.7 | Reseñar dos veces el mismo bar | Dos reseñas en el bar 1 | Ruta en «1 de 8 bares» | Correcto | |
+| 5.8 | Cancelar el diálogo de Limpiar | Rellenar ▸ Limpiar ▸ Cancelar | El formulario no cambia | Correcto | |
 ### 5.5. Layout Inspector
 
 **Problema detectado.** En un Pixel 5, la etiqueta «Picante» se partía letra a letra y «Ración» se cortaba en dos líneas.
