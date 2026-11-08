@@ -152,9 +152,9 @@ Rellenar esta tabla después de ejecutar las comprobaciones.
 | <img src="capturas/principalTablet.png" width="250"> | <img src="capturas/resenaTablet.png" width="250"> | <img src="capturas/fuenteMaximo.png" width="250"> |
 ### 5.7. Recursos gráficos
 
-- **Banner:** [Indicar su origen].
-- **Icono:** [Indicar su origen].
-- **Otros recursos:** [Indicar si corresponde].
+- **Banner:** imagen generada con ChatGPT (OpenAI) a partir de una descripción propia.
+- **Icono de la aplicación:** icono por defecto de la plantilla de Android Studio.
+- **Iconos de la interfaz** (flechas, estrellas, corazón, botones): [Material Icons](https://fonts.google.com/icons) de Google, con licencia Apache 2.0.
 
 ### 5.8. Control de versiones
 
