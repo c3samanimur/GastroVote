@@ -11,7 +11,7 @@ La aplicación permite consultar información sobre ocho bares, seleccionar tapa
 - **Lenguaje:** Kotlin.
 - **Interfaz:** Jetpack Compose y Material Design 3.
 - **Entorno de desarrollo:** Android Studio.
-- **SDK mínimo:** API 24 (verificar en Gradle).
+- **SDK mínimo:** API 24 .
 - **Control de versiones:** Git y GitHub.
 
 ## 3. Funcionalidades de GastroVote
@@ -62,6 +62,10 @@ Una barra de progreso representa cuántos de los ocho bares han sido reseñados.
 
 Publicar varias reseñas de un mismo establecimiento no aumenta el progreso.
 
+### Idiomas y temas
+
+La aplicación está disponible en español (idioma por defecto) e inglés, según el idioma del dispositivo. Los nombres de bares y tapas no se traducen. Dispone de tema claro y oscuro con colores propios, que se aplican según la configuración del sistema.
+
 ## 4. Funcionamiento de la aplicación
 
 1. El usuario abre GastroVote y selecciona un bar.
@@ -92,6 +96,10 @@ En esta primera entrega se desarrolla la interfaz principal de GastroVote, incor
 - `AlertDialog`: confirmación de limpieza.
 - `LinearProgressIndicator`: progreso de la ruta.
 - `verticalScroll`: desplazamiento vertical.
+- `FlowRow`: etiquetas y opciones de tamaño, que pasan a la línea siguiente si no caben.
+- `Modifier.selectable` y `selectableGroup`: opciones de tamaño pulsables en toda la fila y agrupadas como excluyentes.
+- `FilledTonalButton` e `IconButton`: selector de bar y favorito.
+- `Modifier.widthIn`: ancho máximo del contenido en pantallas grandes.
 
 ### 5.3. Gestión de estados
 
@@ -118,7 +126,7 @@ La clase `ReseñaPublicada` almacena una copia de los datos al publicar, evitand
 | 5.6 | Precio ración | Bar 1, sin / con descuento | 7,50 € / 6,75 € | Correcto | |
 | 5.7 | Reseñar dos veces el mismo bar | Dos reseñas en el bar 1 | Ruta en «1 de 8 bares» | Correcto | |
 | 5.8 | Cancelar el diálogo de Limpiar | Rellenar ▸ Limpiar ▸ Cancelar | El formulario no cambia | Correcto | |
-### 5.5. Layout Inspector
+### 5.5 Layout Inspector
 
 **Problema detectado.** En un Pixel 5, la etiqueta «Picante» se partía letra a letra y «Ración» se cortaba en dos líneas.
 
@@ -161,6 +169,11 @@ El desarrollo se gestiona mediante Git y GitHub, utilizando commits para registr
 
 - **Etiqueta:** `entrega1`
 - **Release:** `Entrega 1 – UT2`
+
+### 5.9. Ampliaciones opcionales
+
+- **Contador de caracteres del comentario.** Debajo del campo se muestra «N/200», actualizado mientras se escribe. El campo no admite más de 200 caracteres.
+- **Logro «Crítico gastronómico».** Al publicar la reseña del tercer bar distinto, un diálogo anuncia el logro. Solo aparece una vez: reseñar de nuevo un bar ya reseñado o seguir con el cuarto no lo vuelve a mostrar.
 
 ## 6. Cómo ejecutar GastroVote
 
