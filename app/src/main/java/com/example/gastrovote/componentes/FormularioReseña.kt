@@ -264,6 +264,7 @@ private fun Botones(limpiar: () -> Unit, enviar: () -> Unit) {
 
 @Composable
 private fun CampoComentario(reseña: String, comprobarLong: (String) -> Unit) {
+    val maximo = 200
     Row(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.Center,
@@ -272,12 +273,14 @@ private fun CampoComentario(reseña: String, comprobarLong: (String) -> Unit) {
         TextField(
             value = reseña,
             onValueChange = { nuevoTexto ->
-                if (reseña.length <= 200) {
+                if (nuevoTexto.length <= maximo) {
                     comprobarLong(nuevoTexto)
                 }
             },
-            label = { Text(stringResource(R.string.comentario_opcional)) }
+            label = { Text(stringResource(R.string.comentario_opcional)) },
+            supportingText = { Text(stringResource(R.string.contador_comentario, reseña.length, maximo))}
         )
+
     }
 }
 

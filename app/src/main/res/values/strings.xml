@@ -54,6 +54,10 @@
     <string name="etiquetas_ninguna">Ninguna</string>
     <string name="resumen_comentario">Comentario: %1$s</string>
     <string name="banner_descripcion">Banner de GastroVote</string>
+    <string name="contador_comentario" translatable="false">%1$d/%2$d</string>
+    <string name="logro_titulo">¡Logro desbloqueado!</string>
+    <string name="logro_texto">Crítico gastronómico: ya has reseñado 3 bares distintos de la ruta.</string>
+    <string name="logro_aceptar">¡Genial!</string>
 
     <string-array name="nombres_bares" translatable="false">
         <item>El Extremeño</item>

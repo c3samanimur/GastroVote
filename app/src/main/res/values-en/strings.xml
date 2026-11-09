@@ -54,6 +54,9 @@
     <string name="bar_anterior">Previous bar</string>
     <string name="bar_siguiente">Next Bar</string>
     <string name="banner_descripcion">Gastrovote banner</string>
+    <string name="logro_titulo">Achievement unlocked!</string>
+    <string name="logro_texto">Food critic: you have reviewed 3 different bars on the route.</string>
+    <string name="logro_aceptar">Great!</string>
 
         <string-array name="descripciones_tapas">
             <item>Donut-shaped bread ring with Russian salad and anchovy</item>

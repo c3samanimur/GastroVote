@@ -38,6 +38,7 @@ import com.example.gastrovote.componentes.Cabecera
 import com.example.gastrovote.componentes.FichaBar
 import com.example.gastrovote.componentes.TuReseña
 import com.example.gastrovote.ui.theme.GastroVoteTheme
+import com.example.gastrovote.componentes.DialogoLogroGastronomico
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -107,6 +108,7 @@ fun BarraSelectora() {
     val favoritos =
         remember { mutableStateListOf(false, false, false, false, false, false, false, false) }
     val puntuacionesEstrella = stringArrayResource(id = R.array.puntuacionesEstrella)
+    var mostrarLogro by remember {mutableStateOf(false)}
 
     val irAnterior: () -> Unit = {
         if (indice > 0) {
@@ -149,6 +151,9 @@ fun BarraSelectora() {
         onPublicar = { reseña ->
             baresSeleccionados[indice] = true
             ultimaReseña = reseña
+            if (baresSeleccionados.count {it} == 3){
+                mostrarLogro = true
+            }
         })
 
     ultimaReseña?.let { reseña ->
@@ -165,6 +170,9 @@ fun BarraSelectora() {
         progress = { baresReseñados.toFloat() / totalBares },
         modifier = Modifier.fillMaxWidth()
     )
+    if(mostrarLogro){
+        DialogoLogroGastronomico(cerrarDialogo = {mostrarLogro = false})
+    }
 
 }
 
