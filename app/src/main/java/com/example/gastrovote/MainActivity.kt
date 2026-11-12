@@ -33,12 +33,13 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.gastrovote.componentes.SelectorBar
+import com.example.gastrovote.componentes.BarraSuperior
 import com.example.gastrovote.componentes.Cabecera
+import com.example.gastrovote.componentes.DialogoLogroGastronomico
 import com.example.gastrovote.componentes.FichaBar
+import com.example.gastrovote.componentes.SelectorBar
 import com.example.gastrovote.componentes.TuReseña
 import com.example.gastrovote.ui.theme.GastroVoteTheme
-import com.example.gastrovote.componentes.DialogoLogroGastronomico
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -48,7 +49,7 @@ class MainActivity : ComponentActivity() {
             GastroVoteTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     Pantalla(modifier = Modifier.padding(innerPadding))
-                }
+                    BarraSuperior(titulo = stringResource(R.string.gastrovote) )}
             }
         }
     }

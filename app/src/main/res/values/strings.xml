@@ -92,7 +92,6 @@
         <item>Guiso tradicional murciano de habas secas con jamón y chorizo</item>
     </string-array>
 
-
     
     <string-array name="precios_tapas" translatable="false">
         <item>2.50</item>
@@ -115,4 +114,42 @@
         <item>4</item>
         <item>3</item>
     </string-array>
+
+    <string-array name="telefonos_bares" translatable="false">
+        <item>968000001</item>
+        <item>968000002</item>
+        <item>968000003</item>
+        <item>968000004</item>
+        <item>968000005</item>
+        <item>968000006</item>
+        <item>968000007</item>
+        <item>968000008</item>
+    </string-array>
+
+    <string-array name="direcciones_bares" translatable="false">
+        <item>Plaza de las Flores, Murcia</item>
+        <item>Calle Trapería, Murcia</item>
+        <item>Plaza de Santo Domingo, Murcia</item>
+        <item>Calle Platería, Murcia</item>
+        <item>Plaza de Romea, Murcia</item>
+        <item>Plaza del Cardenal Belluga, Murcia</item>
+        <item>Gran Vía Escultor Salzillo, Murcia</item>
+        <item>Plaza de San Juan, Murcia</item>
+    </string-array>
+
+    <string-array name="webs_bares" translatable="false">
+        <item>https://www.google.com/search?q=El+Extremeño+Murcia</item>
+        <item>https://www.google.com/search?q=Venta+el+olivo+Murcia</item>
+        <item>https://www.google.com/search?q=Cerveceria+Ponencias+Murcia</item>
+        <item>https://www.google.com/search?q=La+voz+negra+Murcia</item>
+        <item>https://www.google.com/search?q=La+cavalica+Murcia</item>
+        <item>https://www.google.com/search?q=Rincón+de+Lola+Murcia</item>
+        <item>https://www.google.com/search?q=Cervecería+Antonio+Murcia</item>
+        <item>https://www.google.com/search?q=Bar+las+Mellizas+Murcia</item>
+    </string-array>
+
+    <string name="titulo_ruta">La ruta</string>
+    <string name="titulo_ficha">Ficha del bar</string>
+    <string name="titulo_resena">Nueva reseña</string>
+    <string name="volver">Volver</string>
 </resources>

@@ -69,4 +69,9 @@
             <item>Traditional Murcian stew of dried broad beans with ham and chorizo</item>
         </string-array>
 
+    <string name="titulo_ruta">The route</string>
+    <string name="titulo_ficha">Bar details</string>
+    <string name="titulo_resena">New review</string>
+    <string name="volver">Back</string>
+
 </resources>
