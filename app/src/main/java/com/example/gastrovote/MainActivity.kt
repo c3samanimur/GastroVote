@@ -1,7 +1,10 @@
 package com.example.gastrovote
 
 
+import android.R.attr.onClick
+import android.content.Intent
 import android.os.Bundle
+import android.widget.Button
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -15,6 +18,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Button
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -37,6 +41,7 @@ import com.example.gastrovote.componentes.BarraSuperior
 import com.example.gastrovote.componentes.Cabecera
 import com.example.gastrovote.componentes.DialogoLogroGastronomico
 import com.example.gastrovote.componentes.FichaBar
+import com.example.gastrovote.componentes.ResumenReseña
 import com.example.gastrovote.componentes.SelectorBar
 import com.example.gastrovote.componentes.TuReseña
 import com.example.gastrovote.ui.theme.GastroVoteTheme
@@ -47,9 +52,11 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             GastroVoteTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+
+                Scaffold(modifier = Modifier.fillMaxSize(),
+                    topBar = {BarraSuperior(titulo = stringResource(R.string.gastrovote))}) { innerPadding ->
                     Pantalla(modifier = Modifier.padding(innerPadding))
-                    BarraSuperior(titulo = stringResource(R.string.gastrovote) )}
+                }
             }
         }
     }
@@ -58,6 +65,7 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun Pantalla(modifier: Modifier) {
     var scrollState = rememberScrollState()
+    val contexto = LocalContext.current
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -65,6 +73,13 @@ fun Pantalla(modifier: Modifier) {
     ) {
 
         Cabecera()
+        Button(
+            onClick = {
+                contexto.startActivity(Intent(contexto, RutaActivity::class.java))
+            }
+        ){
+            Text(stringResource(R.string.ver_la_ruta))
+        }
         Column(
             modifier = Modifier.padding(16.dp),
             verticalArrangement = Arrangement.Top,

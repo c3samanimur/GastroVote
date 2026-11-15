@@ -23,6 +23,18 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".RutaActivity"
+            android:exported="false"
+            android:label="@string/title_activity_ruta"
+            android:theme="@style/Theme.GastroVote"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".DetalleBarActivity"
+            android:exported="false"
+            android:label="@string/title_activity_detalle_bar"
+            android:theme="@style/Theme.GastroVote"
+            android:windowSoftInputMode="adjustResize" />
     </application>
 
 </manifest>

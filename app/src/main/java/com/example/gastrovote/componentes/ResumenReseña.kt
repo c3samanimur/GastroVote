@@ -1,4 +1,4 @@
-package com.example.gastrovote
+package com.example.gastrovote.componentes
 
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Column
@@ -14,6 +14,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.example.gastrovote.R
+import com.example.gastrovote.ReseñaPublicada
 
 @Composable
 fun ResumenReseña(reseña: ReseñaPublicada) {

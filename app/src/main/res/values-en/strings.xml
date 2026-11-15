@@ -57,6 +57,7 @@
     <string name="logro_titulo">Achievement unlocked!</string>
     <string name="logro_texto">Food critic: you have reviewed 3 different bars on the route.</string>
     <string name="logro_aceptar">Great!</string>
+    <string name="ver_la_ruta">SEE THE ROUTE</string>
 
         <string-array name="descripciones_tapas">
             <item>Donut-shaped bread ring with Russian salad and anchovy</item>

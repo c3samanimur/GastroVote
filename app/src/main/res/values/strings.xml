@@ -58,6 +58,7 @@
     <string name="logro_titulo">¡Logro desbloqueado!</string>
     <string name="logro_texto">Crítico gastronómico: ya has reseñado 3 bares distintos de la ruta.</string>
     <string name="logro_aceptar">¡Genial!</string>
+    <string name="ver_la_ruta">VER LA RUTA</string>
 
     <string-array name="nombres_bares" translatable="false">
         <item>El Extremeño</item>
@@ -92,7 +93,7 @@
         <item>Guiso tradicional murciano de habas secas con jamón y chorizo</item>
     </string-array>
 
-    
+
     <string-array name="precios_tapas" translatable="false">
         <item>2.50</item>
         <item>4.00</item>
@@ -152,4 +153,6 @@
     <string name="titulo_ficha">Ficha del bar</string>
     <string name="titulo_resena">Nueva reseña</string>
     <string name="volver">Volver</string>
+    <string name="title_activity_ruta">RutaActivity</string>
+    <string name="title_activity_detalle_bar">DetalleBarActivity</string>
 </resources>
