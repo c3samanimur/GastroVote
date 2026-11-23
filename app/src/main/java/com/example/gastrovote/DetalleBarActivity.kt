@@ -24,12 +24,14 @@ class DetalleBarActivity : ComponentActivity() {
                     topBar = {BarraSuperior(titulo = stringResource(R.string.titulo_ficha), onAtras = {finish()})}
                 ) { innerPadding ->
                     Text(
-                        text = "Ficha del bar $indice",
+                        text = "Ficha del bar " + (indice+1),
                         modifier = Modifier.padding(innerPadding)
                     )
                 }
             }
         }
     }
+
+
 }
 

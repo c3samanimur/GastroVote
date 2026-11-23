@@ -153,6 +153,8 @@
     <string name="titulo_ficha">Ficha del bar</string>
     <string name="titulo_resena">Nueva reseña</string>
     <string name="volver">Volver</string>
-    <string name="title_activity_ruta">RutaActivity</string>
-    <string name="title_activity_detalle_bar">DetalleBarActivity</string>
+    <string name="title_activity_ruta" translatable="false">RutaActivity</string>
+    <string name="title_activity_detalle_bar" translatable="false">DetalleBarActivity</string>
+    <string name="favorito">Has marcado esta tapa como favorita</string>
+    <string name="resenado">Te gusta esta tapa</string>
 </resources>

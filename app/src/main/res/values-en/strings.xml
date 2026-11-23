@@ -74,5 +74,6 @@
     <string name="titulo_ficha">Bar details</string>
     <string name="titulo_resena">New review</string>
     <string name="volver">Back</string>
-
+    <string name="favorito">You checked this tapa as favourite</string>
+    <string name="resenado">You like this tapa</string>
 </resources>
